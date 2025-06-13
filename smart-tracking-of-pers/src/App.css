@@ -1,0 +1,221 @@
+/* HEADER */
+.ibm-header {
+  background-color: #313231 !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-user-icon {
+  fill: rgb(4, 3, 3) !important; /* Set icon color */
+  margin-top: 2px; /* Align with IBM logo */
+  width: 24px;
+  height: 24px;
+}
+
+.bx--header__name,
+.bx--header__menu-item {
+  color: white !important;
+}
+
+.bx--header__name:hover {
+  text-decoration: none;
+}
+
+.bx--header {
+  background-color: #172869;
+  color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 56px; /* Standard Carbon header height */
+  display: flex;
+  align-items: center;
+}
+
+/* IBM logo */
+.header-logo {
+  height: 32px;
+  width: auto;
+  vertical-align: middle;
+}
+
+.bx--header__global {
+  margin-left: auto; /* Pushes the global actions (like the icon) to the right */
+  display: flex;
+  align-items: center;
+}
+
+/* Layout container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content */
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #f4f4f4;
+  font-family: "IBM Plex Sans", Arial, sans-serif;
+  color: #172869;
+}
+
+/* HOMEPAGE */
+.homepage-grid {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.homepage-header h1 {
+  font-size: 2rem;
+  color: #161616;
+  margin-bottom: 2rem;
+}
+
+.homepage-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.homepage-tile {
+  padding: 2rem;
+  background-color: #f4f4f4;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 250px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px; /* Increased for smoother edges */
+  box-shadow: 0 0 0 transparent;
+}
+
+.homepage-tile:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #c6c6c6;
+}
+
+/* FOOTER */
+.ibm-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f7f8;
+  color: #525252;
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+  font-family: "IBM Plex Sans", Arial, sans-serif;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-logo {
+  height: 24px;
+  width: auto;
+}
+
+.ibm-footer a {
+  color: #0f62fe;
+  margin-left: 1.5rem;
+  text-decoration: none;
+}
+
+.ibm-footer a:hover {
+  text-decoration: underline;
+}
+/* New: Make logo and avatar align in one line */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* IBM Logo */
+.header-logo {
+  height: 100%; /* Fill the header height */
+  max-height: 32px; /* Maintain a clean max size */
+  width: auto; /* Keep aspect ratio */
+  object-fit: contain; /* Fit the content nicely */
+  margin-left: 1rem; /* Padding from left edge */
+  background: transparent; /* Ensure no background */
+  border: none; /* Remove any borders */
+  box-shadow: none; /* Remove shadows if any */
+}
+
+/* New: Smaller user icon aligned right */
+.header-user-avatar {
+  height: 100%;
+  max-height: 50px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 1rem;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+/* Keep Carbon header styles */
+.bx--header {
+  background-color: #172869;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+}
+.homepage-header h1 {
+  font-size: 2rem;
+  color: #161616;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.homepage-cards {
+  background-color: #efeeee;
+  padding: 4rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin: 2rem auto 0 auto;
+  max-width: 1000px;
+  min-height: 320px;
+}
+
+.homepage-tile {
+  padding: 3rem 2rem;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 300px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #03070e;
+  text-align: center;
+}
+
+.homepage-tile:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.08) translateY(-6px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+  border-color: #8c8c8c;
+  color: #0b111d;
+}

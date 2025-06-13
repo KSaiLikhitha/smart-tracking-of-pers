@@ -1,0 +1,102 @@
+/* Center content */
+/* App.css */
+
+/* Set overall background to white */
+body,
+.App,
+.cds--theme--g100 {
+  background-color: #ffffff !important;
+  color: #000000;
+}
+
+/* Optional: Update App header background if needed */
+.App-header {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Table cell styling to show vertical column borders */
+.cds--data-table td,
+.cds--data-table th {
+  border-right: 1px solid #d0d0d0;
+}
+
+/* Remove right border for last cell to avoid double border */
+.cds--data-table td:last-child,
+.cds--data-table th:last-child {
+  border-right: none;
+}
+
+/* Zebra striping for better row distinction (optional) */
+.cds--data-table tbody tr:nth-child(odd) td {
+  background-color: #f4f4f4;
+}
+
+.cds--data-table tbody tr:nth-child(even) td {
+  background-color: #ffffff;
+}
+
+/* Logo styling */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+/* Optional animation */
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* Table row background */
+.ibm-light-blue-table tbody tr td {
+  background-color: #d0e2ff;
+  border-right: 1px solid #8d8d8d; /* Add column separation */
+}
+
+/* Add vertical line between columns (headers) */
+.ibm-light-blue-table thead th {
+  border-right: 1px solid #8d8d8d; /* Vertical line between column headers */
+}
+
+/* Last column shouldn’t have a right border */
+.ibm-light-blue-table tbody tr td:last-child,
+.ibm-light-blue-table thead th:last-child {
+  border-right: none;
+}
+
+/* Header styling */
+.App-header {
+  background-color: #ffffff; /* Changed background to white */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #000000; /* Changed text to black for white background */
+}
+
+/* Link styling */
+.App-link {
+  color: #0f62fe; /* IBM Blue */
+}
+.custom-table .cds--data-table td,
+.custom-table .cds--data-table th {
+  border-right: 1px solid #d0d0d0;
+}
+.custom-table .cds--data-table td:last-child,
+.custom-table .cds--data-table th:last-child {
+  border-right: none;
+}
+
+/* Logo spin animation */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

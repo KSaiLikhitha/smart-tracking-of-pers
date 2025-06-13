@@ -1,0 +1,134 @@
+/* Reset and base */
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #f4f6fa;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  padding: 60px 140px 20px 140px;
+}
+
+.login-box {
+  background: transparent;
+  padding: 0;
+  width: 100%;
+  max-width: 500px;
+}
+
+.login-box h2 {
+  font-size: 28px;
+  font-weight: 400;
+  color: #21272a;
+  margin-bottom: 10px;
+}
+
+.login-box p {
+  font-size: 16px;
+  color: #525252;
+  margin-bottom: 30px;
+}
+
+.login-box input[type="email"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border: 1px solid #8d8d8d;
+  font-size: 16px;
+  background-color: #fff;
+  border-radius: 0;
+}
+
+.login-box input:focus {
+  outline: 2px solid #0f62fe;
+  border: none;
+}
+
+.forgot-password {
+  color: #0f62fe;
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: 25px;
+  display: inline-block;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+button {
+  background-color: #0f62fe;
+  color: white;
+  padding: 14px;
+  width: 100%;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0353e9;
+}
+
+.links {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #525252;
+}
+
+.links a {
+  color: #0f62fe;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.footer-bar {
+  margin-top: auto;
+  width: 100%;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #525252;
+  border-top: 1px solid #e0e0e0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.footer-bar img {
+  height: 20px;
+  opacity: 0.85;
+}
+
+.footer-bar a {
+  color: #0f62fe;
+  text-decoration: none;
+  font-weight: 500;
+}
