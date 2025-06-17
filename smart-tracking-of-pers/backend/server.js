@@ -1,99 +1,118 @@
-// backend/server.js
+// ✅ backend/server.js
 const express = require("express");
 const bodyParser = require("body-parser");
 const NodeCouchDb = require("node-couchdb");
-const fetch = require("node-fetch");
-const xpath = require("xpath");
-const { DOMParser } = require("xmldom");
-const fs = require("fs");
+const { authenticate, isUserInGroup } = require("./ldapAuth");
 
 const app = express();
 
+// ✅ Middleware setup
 app.use(bodyParser.json());
-app.use(function (req, res, next) {
+
+// ✅ CORS configuration
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   next();
 });
+app.options("*", (req, res) => res.sendStatus(200));
 
+// ✅ CouchDB connection setup
 const couch = new NodeCouchDb({
   auth: {
-    user: "admin",
-    pass: "user",
+    user: "admin",  // Replace with your CouchDB username
+    pass: "user",   // Replace with your CouchDB password
   },
 });
 
 const dbName = "salesforcedata";
 const viewUrl = "_design/all_docs/_view/all";
 
-// API to fetch data
+// ✅ API: Get all Salesforce data
 app.get("/api/salesforce-data", (req, res) => {
   couch.get(dbName, viewUrl).then(
     (data) => {
       const result = data.data.rows.map((row) => {
-        const doc = { id: row.id };
-        for (const key in row.value) {
-          doc[key] = row.value[key];
-        }
+        const doc = { id: row.id, ...row.value };
         return doc;
       });
       res.json(result);
     },
     (err) => {
-      res.status(500).json({ error: err });
+      console.error("❌ CouchDB fetch error:", err.message);
+      res.status(500).json({ error: "Failed to fetch data" });
     }
   );
 });
 
-// API to fetch by ID
+// ✅ API: Get document by ID
 app.get("/api/salesforce-data/:id", (req, res) => {
   const id = req.params.id;
   couch.get(dbName, id).then(
     (data) => res.json(data.data),
-    (err) => res.status(500).json({ error: err })
+    (err) => {
+      console.error("❌ Document fetch error:", err.message);
+      res.status(500).json({ error: "Failed to fetch document" });
+    }
   );
 });
 
-// Authentication API using email
-app.post("/api/authenticate-email", async (req, res) => {
-  const { email } = req.body;
-  if (!email)
-    return res.status(400).json({ success: false, message: "Email required" });
+// ✅ API: Delivery Manager login
+app.post("/api/login-dm", async (req, res) => {
+  const { email, password } = req.body;
+  const groupName = "PER"; // Replace with actual group name if needed
 
-  try {
-    const url = `https://bluepages.ibm.com/BpHttpApisv3/slaphapi?ibmperson/preferredidentity=${email}.list/byxml`;
-    const response = await fetch(url);
-    const xml = await response.text();
-
-    const doc = new DOMParser().parseFromString(xml);
-    const nodes = xpath.select("//entry/@dn", doc);
-    const dnValue = nodes.length > 0 ? nodes[0].value : null;
-
-    const uidMatch = dnValue && dnValue.match(/uid=([^,]+)/);
-    const uid = uidMatch ? uidMatch[1] : null;
-
-    if (!uid)
-      return res.status(404).json({ success: false, message: "UID not found" });
-
-    const deliveryManagers = JSON.parse(
-      fs.readFileSync("./backend/deliveryManagers.json")
-    ).allowedUIDs;
-
-    if (deliveryManagers.includes(uid)) {
-      res.json({ success: true, role: "deliveryManager", uid });
-    } else {
-      res.status(403).json({ success: false, message: "Not authorized" });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Error verifying user" });
+  if (!email || !password) {
+    return res.status(400).json({ message: "Missing credentials" });
   }
+
+  authenticate(email, password, async (err, isAuth) => {
+    if (err || !isAuth) {
+      console.warn("❌ LDAP auth failed:", err?.message || "Invalid credentials");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const inGroup = await isUserInGroup(email, groupName);
+    if (!inGroup) {
+      console.warn(`❌ Access denied: ${email} not in group ${groupName}`);
+      return res.status(403).json({ message: "Access denied: Not in Delivery Manager group" });
+    }
+
+    console.log(`✅ Login success: ${email} in group ${groupName}`);
+    res.json({ message: "Login successful", role: "DeliveryManager" });
+  });
 });
 
+// ✅ API: Project Executive login
+app.post("/api/login-pe", async (req, res) => {
+  const { email, password } = req.body;
+  const groupName = "PE"; // Group name for Project Executives
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Missing credentials" });
+  }
+
+  authenticate(email, password, async (err, isAuth) => {
+    if (err || !isAuth) {
+      console.warn("❌ LDAP auth failed:", err?.message || "Invalid credentials");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const inGroup = await isUserInGroup(email, groupName);
+    if (!inGroup) {
+      console.warn(`❌ Access denied: ${email} not in group ${groupName}`);
+      return res.status(403).json({ message: "Access denied: Not in Project Executive group" });
+    }
+
+    console.log(`✅ Login success: ${email} in group ${groupName}`);
+    res.json({ message: "Login successful", role: "ProjectExecutive" });
+  });
+});
+
+
+// ✅ Server start
 const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(`Backend running on http://localhost:${PORT}`);
+  console.log(`🚀 Backend server running at http://localhost:${PORT}`);
 });
