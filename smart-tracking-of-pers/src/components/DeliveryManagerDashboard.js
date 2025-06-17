@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./DeliveryManagerStyles.css";
+import "./ProjectExecutiveStyles.css";
 
-const Dashboard = () => {
+const DeliveryManagerDashboard = () => {
   const [activeTab, setActiveTab] = useState("PER");
   const [casesData, setCasesData] = useState([]);
   const [mappingCasesData, setMappingCasesData] = useState([]);
@@ -12,9 +12,10 @@ const Dashboard = () => {
     fetch("http://localhost:5000/api/salesforce-data")
       .then((res) => res.json())
       .then((data) => {
-        // Group by KPI Name
-        const getCount = (kpiName) =>
-          data.filter((d) => d["KPI Name"] === kpiName).length;
+        const getCount = (kpiName) => {
+          if (!Array.isArray(data)) return 0;
+          return data.filter((d) => d["KPI Name"] === kpiName).length;
+        };
 
         const perCases = [
           {
@@ -23,37 +24,32 @@ const Dashboard = () => {
             route: "/kpi1",
           },
           {
-            title:
-              "Open Cases with PER SME in IBM is working and Waiting on Client > 2 days",
+            title: "Open Cases with PER SME in IBM is working and Waiting on Client > 2 days",
             count: getCount("KPI2 Info"),
             route: "/kpi2",
           },
           {
-            title:
-              "Open Cases with PER SME in CTE Technical Implementation / CTE Validation Testing > 2 weeks",
+            title: "Open Cases with PER SME in CTE Technical Implementation / CTE Validation Testing > 2 weeks",
             count: getCount("KPI3 Info"),
             route: "/kpi3",
           },
           {
-            title: "Open cases in production Implementation status > 3 days",
+            title: "Open cases in Production Implementation status > 3 days",
             count: getCount("KPI4 Info"),
             route: "/kpi4",
           },
           {
-            title:
-              "Open cases in Production Validation or Completed Status > 14 days",
+            title: "Open cases in Production Validation or Completed Status > 14 days",
             count: getCount("KPI5 Info"),
             route: "/kpi5",
           },
           {
-            title:
-              "Open cases with Parent case closed and child cases in open status",
+            title: "Open cases with Parent case closed and child cases in open status",
             count: getCount("KPI6 Info"),
             route: "/kpi6",
           },
           {
-            title:
-              "Cases which have Production Implementation Tracking comments with IBM or TP as issue",
+            title: "Cases which have Production Implementation Tracking comments with IBM or TP as issue",
             count: getCount("KPI7 Info"),
             route: "/kpi7",
           },
@@ -86,7 +82,75 @@ const Dashboard = () => {
         setCasesData(perCases);
         setMappingCasesData(mappingCases);
       })
-      .catch((err) => console.error("Error fetching dashboard data:", err));
+      .catch((err) => {
+        console.error("Error fetching dashboard data:", err);
+
+        // Default zero-count data for fallback
+        const defaultPer = [
+          {
+            title: "Cases in PER queue > 2 days (Open/Triage/Technical Review)",
+            count: 0,
+            route: "/kpi1",
+          },
+          {
+            title: "Open Cases with PER SME in IBM is working and Waiting on Client > 2 days",
+            count: 0,
+            route: "/kpi2",
+          },
+          {
+            title: "Open Cases with PER SME in CTE Technical Implementation / CTE Validation Testing > 2 weeks",
+            count: 0,
+            route: "/kpi3",
+          },
+          {
+            title: "Open cases in Production Implementation status > 3 days",
+            count: 0,
+            route: "/kpi4",
+          },
+          {
+            title: "Open cases in Production Validation or Completed Status > 14 days",
+            count: 0,
+            route: "/kpi5",
+          },
+          {
+            title: "Open cases with Parent case closed and child cases in open status",
+            count: 0,
+            route: "/kpi6",
+          },
+          {
+            title: "Cases which have Production Implementation Tracking comments with IBM or TP as issue",
+            count: 0,
+            route: "/kpi7",
+          },
+          {
+            title: "Open Cases with turn around time > 60",
+            count: 0,
+            route: "/kpi8",
+          },
+        ];
+
+        const defaultMapping = [
+          {
+            title: "New Maps exceeding iterations > 5",
+            count: 0,
+          },
+          {
+            title: "Map changes exceeding iterations > 3",
+            count: 0,
+          },
+          {
+            title: "Cases with more than 1 fix",
+            count: 0,
+          },
+          {
+            title: "Cases due for SLA",
+            count: 0,
+          },
+        ];
+
+        setCasesData(defaultPer);
+        setMappingCasesData(defaultMapping);
+      });
   }, []);
 
   const dataToShow = activeTab === "PER" ? casesData : mappingCasesData;
@@ -129,4 +193,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DeliveryManagerDashboard;

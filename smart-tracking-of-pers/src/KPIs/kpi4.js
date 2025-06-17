@@ -15,10 +15,10 @@ import {
 // Define fields to exclude from table
 const excludedFields = ["_id", "_rev", "KPI Name", "id"];
 
-function KPI2() {
+function KPI4() {
   const [rows, setRows] = useState([]);
   const [headers, setHeaders] = useState([]);
-  const KPI_NAME = "KPI2 Info"; // 👈 Targeted KPI
+  const KPI_NAME = "KPI4 Info"; // 👈 Targeted KPI
 
   useEffect(() => {
     fetch("http://localhost:5000/api/salesforce-data")
@@ -94,4 +94,4 @@ function KPI2() {
   );
 }
 
-export default KPI2;
+export default KPI4;

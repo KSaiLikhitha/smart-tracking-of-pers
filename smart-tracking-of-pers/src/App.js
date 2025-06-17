@@ -10,12 +10,15 @@ import {
 import { Grid, Column, Tile } from "@carbon/react";
 
 import DeliveryManagerLogin from "./components/DeliveryManagerLogin";
-import Dashboard from "./components/DeliveryManagerDashboard";
+import DeliveryManagerDashboard from "./components/DeliveryManagerDashboard";
 import Layout from "./layout/Layout";
 import "./App.css";
 import ProjectExecutiveLogin from "./components/ProjectExecutiveLogin";
 import ProjectExecutiveDashboard from "./components/ProjectExecutiveDashboard";
-import Kpi1 from "./KPIs/kpi2";
+import KPI2 from "./KPIs/kpi2";
+import KPI3 from "./KPIs/kpi3";
+import KPI4 from "./KPIs/kpi4";
+
 
 // Homepage component
 function HomePage() {
@@ -63,12 +66,14 @@ function App() {
       <Route path="/" element={renderWithLayout(<HomePage />)} />
       <Route path="/delivery-manager" element={<DeliveryManagerLogin />} />
       <Route path="/project-executive" element={<ProjectExecutiveLogin />} />
-      <Route path="/dashboard" element={renderWithLayout(<Dashboard />)} />
+      <Route path="/deliverymanagerdashboard" element={renderWithLayout(<DeliveryManagerDashboard />)} />
       <Route
         path="/projectexecutivedashboard"
         element={renderWithLayout(<ProjectExecutiveDashboard />)}
       />
-      <Route path="/kpi2" element={renderWithLayout(<Kpi1 />)} />
+      <Route path="/kpi2" element={renderWithLayout(<KPI2/>)} />
+      <Route path="/kpi3" element={renderWithLayout(<KPI3/>)} />
+      <Route path="/kpi4" element={renderWithLayout(<KPI4/>)} />
     </Routes>
   );
 }

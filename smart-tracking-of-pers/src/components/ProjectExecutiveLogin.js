@@ -1,42 +1,98 @@
-import React from "react";
-import "./login.css";
+import React, { useState } from "react";
+import {
+  TextInput,
+  Button,
+  Checkbox,
+  Link,
+  Stack,
+  InlineNotification,
+} from "@carbon/react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../layout/Layout"; // Import the Layout component
+import Layout from "../layout/Layout";
+import "./login.css";
 
 const ProjectExecutiveLogin = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSignIn = () => {
-    // Optional: Add login validation logic
-    navigate("/projectexecutivedashboard");
+  const handleSignIn = async () => {
+    setError("");
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:5000/api/login-pe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        navigate("/projectexecutivedashboard");
+      } else {
+        setError(data.message || "Login failed");
+      }
+    } catch (err) {
+      setError("Server error. Please try again later.");
+    }
   };
 
   return (
     <Layout>
-      <div className="login-page">
+      <div className="login-container">
         <div className="login-box">
-          <h2>Sign in with your w3id credentials</h2>
-          <p>Use your w3id and password</p>
+          <h2 className="login-title">Sign in with your IBM email</h2>
+          <p className="login-subtitle">Use your full IBM email and password</p>
 
-          <input type="email" placeholder="Email address" />
-          <input type="password" placeholder="Password" />
+          <Stack gap={4}>
+            {error && (
+              <InlineNotification
+                kind="error"
+                title="Login Error"
+                subtitle={error}
+                lowContrast
+              />
+            )}
 
-          <a href="#" className="forgot-password">
-            Forgot password?
-          </a>
+            <TextInput
+              id="email"
+              labelText="IBM Email ID"
+              type="email"
+              placeholder="e.g., JOHN.DOE@ibm.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <div className="checkbox-container">
-            <input type="checkbox" id="remember" />
-            <label htmlFor="remember">Remember my email address</label>
-          </div>
+            <TextInput
+              id="password"
+              labelText="Password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <button onClick={handleSignIn}>Sign in</button>
+            <Link href="#">Forgot password?</Link>
 
-          <div className="links">
-            View other <a href="#">sign in methods</a>
-            <br />
-            We’re enhancing w3id. <a href="#">Learn more</a>
-          </div>
+            <Checkbox id="remember" labelText="Remember my email" />
+
+            <Button kind="primary" onClick={handleSignIn}>
+              Sign in
+            </Button>
+
+            <div className="other-methods">
+              <Link href="#">View other sign in methods</Link>
+              <p>
+                We're enhancing w3id. <Link href="#">Learn more</Link>
+              </p>
+            </div>
+          </Stack>
         </div>
       </div>
     </Layout>
